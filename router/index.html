@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráficas</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="charts-container">
+    <div class="chart-container">
+      <canvas id="barChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="pieChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="lineChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+
+    function createChart(chartId, type, data) {
+      const ctx = document.getElementById(chartId).getContext('2d');
+      new Chart(ctx, {
+        type: type,
+        data: data,
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    fetch('http://localhost:3000/api/producto-vendidos')
+      .then(response => response.json())
+      .then(data => {
+      
+        createChart('barChart', 'bar', data);
+
+      
+        createChart('pieChart', 'pie', data);
+
+        createChart('lineChart', 'line', data);
+      })
+      .catch(error => console.error('Error al obtener los datos:', error));
+  </script>
+</body>
+</html>
